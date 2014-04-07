@@ -86,62 +86,6 @@ extern int webtv_parse(aClient *sptr, char *string);
 #define MSG_NOTICE      "NOTICE"        /* NOTI */
 #define TOK_NOTICE      "B"     /* 66 */
 
-//ModuleHeader MOD_HEADER(m_message)
-//  = {
-//	"message",	/* Name of module */
-//	"$Id$", /* Version */
-//	"private message and notice", /* Short description of module */
-//	"3.2-b8-1",
-//	NULL 
- //   };
-
-DLLFUNC int MOD_TEST(m_message)(ModuleInfo *modinfo)
-{
-	MARK_AS_OFFICIAL_MODULE(modinfo);
-	EfunctionAddPChar(modinfo->handle, EFUNC_STRIPBADWORDS_CHANNEL, _stripbadwords_channel);
-	EfunctionAddPChar(modinfo->handle, EFUNC_STRIPBADWORDS_MESSAGE, _stripbadwords_message);
-	EfunctionAddPChar(modinfo->handle, EFUNC_STRIPBADWORDS_QUIT, _stripbadwords_quit);
-	EfunctionAddPChar(modinfo->handle, EFUNC_STRIPCOLORS, _StripColors);
-	EfunctionAddPChar(modinfo->handle, EFUNC_STRIPCONTROLCODES, _StripControlCodes);
-	EfunctionAdd(modinfo->handle, EFUNC_IS_SILENCED, _is_silenced);
-	return MOD_SUCCESS;
-}
-
-/* This is called on module init, before Server Ready */
-DLLFUNC int MOD_INIT(m_message)(ModuleInfo *modinfo)
-{
-	/*
-	 * We call our add_Command crap here
-	*/
-	add_CommandX(MSG_PRIVATE, TOK_PRIVATE, m_private, 2, M_USER|M_SERVER|M_RESETIDLE|M_VIRUS);
-	add_Command(MSG_NOTICE, TOK_NOTICE, m_notice, 2);
-	MARK_AS_OFFICIAL_MODULE(modinfo);
-	return MOD_SUCCESS;
-	
-}
-
-/* Is first run when server is 100% ready */
-DLLFUNC int MOD_LOAD(m_message)(int module_load)
-{
-	return MOD_SUCCESS;
-}
-
-/* Called when module is unloaded */
-DLLFUNC int MOD_UNLOAD(m_message)(int module_unload)
-{
-	if (del_Command(MSG_PRIVATE, TOK_PRIVATE, m_private) < 0)
-	{
-		sendto_realops("Failed to delete command privmsg when unloading %s",
-				MOD_HEADER(m_message).name);
-	}
-	if (del_Command(MSG_NOTICE, TOK_NOTICE, m_notice) < 0)
-	{
-		sendto_realops("Failed to delete command notice when unloading %s",
-				MOD_HEADER(m_message).name);
-	}
-	return MOD_SUCCESS;
-}
-
 static int check_dcc(aClient *sptr, char *target, aClient *targetcli, char *text);
 static int check_dcc_soft(aClient *from, aClient *to, char *text);
 

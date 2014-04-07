@@ -1,11 +1,9 @@
 #include "config.h"
 #include "struct.h"
 #include "common.h"
-#include "channel.h"
 #include "sys.h"
 #include "numeric.h"
 #include "msg.h"
-#include "proto.h"
 #include "channel.h"
 #include <time.h>
 #include <sys/stat.h>
@@ -17,12 +15,14 @@
 #endif
 #include <fcntl.h>
 #include "h.h"
+#include "proto.h"
 #ifdef STRIPBADWORDS
 #include "badwords.h"
 #endif
 #ifdef _WIN32
 #include "version.h"
 #endif
+#include "badwords.h"
 
 
 DLLFUNC int m_message(aClient *cptr, aClient *sptr, int parc, char *parv[], int notice);

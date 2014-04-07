@@ -57,13 +57,19 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 			sendnotice(sptr, "Only opers can use the sendlog command.");
 			return 0;
 		}
+		//SENDLOG sender target message
 		//Shift all arguments one down.
-		parv[0]=parv[1];
+		//void	sendto_message_one(aClient *to, aClient *from, char *sender,
+			//char *cmd, char *nick, char *msg)
+		aClient* acptr = find_person(nick, NULL);
+		if(!acptr) sendnotice(sptr, "Target not found.");
+		else sendto_message_one(acptr,sptr,parv[1],"PRIVMSG",parv[2],parv[3])
+		/*parv[0]=parv[1];
 		parv[1]=parv[2];
 		parv[2]=parv[3];
 		sendnotice(sptr, "%s %s %s", parv[0], parv[1], parv[2]);
 		sendnotice(sptr, "Should have received notice.");
-		m_message(cptr, sptr, parc - 1, parv, 0);
+		m_message(cptr, sptr, parc - 1, parv, 0);*/
 		return 0;
 }
 

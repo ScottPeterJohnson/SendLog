@@ -50,7 +50,7 @@ DLLFUNC int MOD_UNLOAD(m_sendlog)(int module_unload) {
 }
 
 DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
-		if (!isOper(sPtr)) {
+		if (!isOper(sptr)) {
 			sendnotice(sptr, "Only opers can use the sendlog command.");
 			return 0;
 		}
@@ -58,5 +58,5 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 		parv[0]=parv[1];
 		parv[1]=parv[2];
 		parv[2]=parv[1];
-		m_message(cptr, sptr, parc - 1, parv, notice);
+		m_message(cptr, sptr, parc - 1, parv, 0);
 }

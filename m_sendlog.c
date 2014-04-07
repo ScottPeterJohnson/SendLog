@@ -63,7 +63,14 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 			//char *cmd, char *nick, char *msg)
 		aClient* acptr = find_person(parv[2], NULL);
 		if(!acptr) sendnotice(sptr, "Target not found.");
-		else sendto_message_one(acptr,sptr,parv[1],"PRIVMSG",parv[2],parv[3]);
+		else {
+			//DID YOU KNOW: Unreal ircd doesn't actually use char* sender in sendto_message_one?
+			//It just pulls it from the from :)
+			char* temp = sptr->name;
+			sptr->name = parv[1];
+			sendto_message_one(acptr,sptr,parv[1],"PRIVMSG",parv[2],parv[3]);
+			sptr->name = temp;
+		}
 		/*parv[0]=parv[1];
 		parv[1]=parv[2];
 		parv[2]=parv[3];

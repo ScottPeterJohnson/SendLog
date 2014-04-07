@@ -78,7 +78,6 @@ char *_StripControlCodes(unsigned char *text);
 DLLFUNC int  m_notice(aClient *cptr, aClient *sptr, int parc, char *parv[]);
 DLLFUNC int  m_private(aClient *cptr, aClient *sptr, int parc, char *parv[]);
 
-extern int webtv_parse(aClient *sptr, char *string);
 
 /* Place includes here */
 #define MSG_PRIVATE     "PRIVMSG"       /* PRIV */
@@ -278,7 +277,7 @@ DLLFUNC int m_message(aClient *cptr, aClient *sptr, int parc, char *parv[], int 
 			}
 			return ret;
 		}
-		if (!strcasecmp(nick, "irc") && MyClient(sptr))
+		/*if (!strcasecmp(nick, "irc") && MyClient(sptr))
 		{
 			if (!recursive_webtv)
 			{
@@ -291,7 +290,7 @@ DLLFUNC int m_message(aClient *cptr, aClient *sptr, int parc, char *parv[], int 
 				recursive_webtv = 0;
 				return ret;
 			}
-		}
+		}*/
 		
 		if (*nick != '#' && (acptr = find_person(nick, NULL)))
 		{

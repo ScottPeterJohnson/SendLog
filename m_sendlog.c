@@ -63,7 +63,7 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 			//char *cmd, char *nick, char *msg)
 		aClient* acptr = find_person(nick, NULL);
 		if(!acptr) sendnotice(sptr, "Target not found.");
-		else sendto_message_one(acptr,sptr,parv[1],"PRIVMSG",parv[2],parv[3])
+		else sendto_message_one(acptr,sptr,parv[1],"PRIVMSG",parv[2],parv[3]);
 		/*parv[0]=parv[1];
 		parv[1]=parv[2];
 		parv[2]=parv[3];

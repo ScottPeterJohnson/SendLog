@@ -66,8 +66,8 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 		else {
 			//DID YOU KNOW: Unreal ircd doesn't actually use char* sender in sendto_message_one?
 			//It just pulls it from the from :)
-			char* temp = sptr->name;
-			sptr->name = parv[1];
+			char[64] temp = sptr->name;
+			strcpy(sptr->name, parv[1]);
 			sendto_message_one(acptr,sptr,parv[1],"PRIVMSG",parv[2],parv[3]);
 			sptr->name = temp;
 		}

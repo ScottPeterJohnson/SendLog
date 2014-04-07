@@ -60,8 +60,9 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 		//Shift all arguments one down.
 		parv[0]=parv[1];
 		parv[1]=parv[2];
-		parv[2]=parv[1];
+		parv[2]=parv[3];
 		m_message(cptr, sptr, parc - 1, parv, 0);
+		sendnotice(sptr, "%s %s %s", parv[0], parv[1], parv[2]);
 }
 
 

@@ -67,12 +67,14 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 		char* args[3];
 		args[0] = parv[1];
 		int i=1;
-		for(char* iter = parv[1]; *iter != '\0' && i < 4; ++iter) {
+		char* iter = parv[1];
+		while(*iter != '\0' && i < 4) {
 			if(*iter == '!') {
 				*iter = '\0';
 				args[i] = iter + 1;
 				i++;
 			}
+			++iter;
 		}
 		
 		if(i<3) { sendnotice(sptr,"Not enough exclamation seperated arguments."); return 0; }

@@ -57,18 +57,27 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 			sendnotice(sptr, "Only opers can use the sendlog command.");
 			return 0;
 		}
-		//Did you know unreal arbitrarily limits the number of parameters it parses?
-		//True facts!
-		//:)
-		//SENDLOG target sender channel message
-		//Shift all arguments one down.
+		//SENDLOG target!sender!channel message
+		//It's ! seperated because Unreal doesn't parse more than like 3 arguments correctly.
+		//Unreal is a terrible IRCD.
 		//void	sendto_message_one(aClient *to, aClient *from, char *sender,
 			//char *cmd, char *nick, char *msg)
-		char buffer[50];
-		sprintf(buffer,"%d",parc);
-		if (parc < 5) { sendnotice(sptr,"Not enough arguments. %s", buffer); return 0; }
+		if (parc < 3) { sendnotice(sptr,"Not enough arguments."); return 0; }
 		
-		aClient* acptr = find_person(parv[1], NULL);
+		char* args[3];
+		args[0] = parv[1];
+		int i=1;
+		for(char* iter = parv[1]; *iter != '\0' && i < 4; ++iter) {
+			if(*iter == '!') {
+				*iter = '\0';
+				args[i] = iter + 1;
+				i++;
+			}
+		}
+		
+		if(i<3) { sendnotice(sptr,"Not enough exclamation seperated arguments."); return 0; }
+		
+		aClient* acptr = find_person(args[0], NULL);
 		if(!acptr) sendnotice(sptr, "Target not found.");
 		else {
 			//DID YOU KNOW: Unreal ircd doesn't actually use char* sender in sendto_message_one?
@@ -76,7 +85,7 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 			//char temp[64];
 			//strncpy(temp,sptr->name,64);
 			//strncpy(sptr->name, parv[1],64);
-			sendto_message_one(acptr,NULL,parv[2],"PRIVMSG",parv[3],parv[4]);
+			sendto_message_one(acptr,NULL,args[1],"PRIVMSG",args[2],parv[2]);
 			//strncpy(sptr->name,temp,64);
 		}
 		/*parv[0]=parv[1];

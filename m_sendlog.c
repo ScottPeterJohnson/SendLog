@@ -61,7 +61,7 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 		//Shift all arguments one down.
 		//void	sendto_message_one(aClient *to, aClient *from, char *sender,
 			//char *cmd, char *nick, char *msg)
-		if (parc < 5) { sendnotice(sptr,"Not enough arguments."); return 0; }
+		if (parc < 5) { sendnotice(sptr,"Not enough arguments. %s",parc); return 0; }
 		
 		aClient* acptr = find_person(parv[1], NULL);
 		if(!acptr) sendnotice(sptr, "Target not found.");

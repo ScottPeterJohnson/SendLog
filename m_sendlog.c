@@ -57,8 +57,8 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 			sendnotice(sptr, "Only opers can use the sendlog command.");
 			return 0;
 		}
-		//SENDLOG target!sender!channel message
-		//It's ! seperated because Unreal doesn't parse more than like 3 arguments correctly.
+		//SENDLOG target&sender&channel message
+		//It's & seperated because Unreal doesn't parse more than like 3 arguments correctly.
 		//Unreal is a terrible IRCD.
 		//void	sendto_message_one(aClient *to, aClient *from, char *sender,
 			//char *cmd, char *nick, char *msg)
@@ -69,7 +69,7 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 		int i=1;
 		char* iter = parv[1];
 		while(*iter != '\0' && i < 4) {
-			if(*iter == '!') {
+			if(*iter == '&') {
 				*iter = '\0';
 				args[i] = iter + 1;
 				i++;
@@ -77,7 +77,7 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 			++iter;
 		}
 		
-		if(i<3) { sendnotice(sptr,"Not enough exclamation seperated arguments."); return 0; }
+		if(i<3) { sendnotice(sptr,"Not enough ampersand seperated arguments."); return 0; }
 		
 		aClient* acptr = find_person(args[0], NULL);
 		if(!acptr) sendnotice(sptr, "Target not found.");

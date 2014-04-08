@@ -57,11 +57,11 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 			sendnotice(sptr, "Only opers can use the sendlog command.");
 			return 0;
 		}
-		//SENDLOG sender target message
+		//SENDLOG target sender channel message
 		//Shift all arguments one down.
 		//void	sendto_message_one(aClient *to, aClient *from, char *sender,
 			//char *cmd, char *nick, char *msg)
-		aClient* acptr = find_person(parv[2], NULL);
+		aClient* acptr = find_person(parv[1], NULL);
 		if(!acptr) sendnotice(sptr, "Target not found.");
 		else {
 			//DID YOU KNOW: Unreal ircd doesn't actually use char* sender in sendto_message_one?
@@ -69,7 +69,7 @@ DLLFUNC int m_sendlog(aClient* cptr, aClient* sptr, int parc, char* parv[]) {
 			//char temp[64];
 			//strncpy(temp,sptr->name,64);
 			//strncpy(sptr->name, parv[1],64);
-			sendto_message_one(acptr,NULL,parv[1],"PRIVMSG",parv[2],parv[3]);
+			sendto_message_one(acptr,NULL,parv[2],"PRIVMSG",parv[3],parv[4]);
 			//strncpy(sptr->name,temp,64);
 		}
 		/*parv[0]=parv[1];
